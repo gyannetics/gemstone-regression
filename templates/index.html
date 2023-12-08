@@ -6,8 +6,7 @@
   </head>
   <body>
     <a href="https://github.com/utkarshg1/mlproject_regression" class="top-left-link" target="_blank">GitHub Repository Link</a>
-    <h1>Gemstone Price Prediction - Utkarsh Gaikwad</h1>
-    <img src="{{url_for('static', filename='/Image/your_profile_pic.jpg')}}" alt="Your Profile Picture" class="profile">
+    <h1>Gemstone Price Prediction</h1>
     <div class="form-box">
     <form action="{{url_for('predict_datapoint')}}" method="POST">
         <div class="form-group">
@@ -84,7 +83,7 @@
     </div>
     <div>      
     <h2>
-      Predicted Gemstone Price is : {{ results }}
+      Predicted Gemstone Price is : {{ results | safe }}
     </h2>
   </body>
 </html>
