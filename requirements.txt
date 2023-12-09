@@ -10,4 +10,7 @@ dill
 flask
 flask_cors
 lime
+fastapi
+uvicorn
+python-multipart
 # -e .

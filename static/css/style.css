@@ -1,85 +1,89 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #BFE6FF;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #1a96e4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
 
 .top-left-link {
-        position: absolute;
-        top: 20px; /* Add some top margin */
-        left: 20px; /* Add some left margin */
-        padding: 10px; /* Add some padding */
-        background-color: #DCAE96; /* Add a background color */
-        border-radius: 5px; /* Add some rounded corners */
-        font-size: 16px; /* Increase the font size */
-        color: black; /* Change the font color */
-        text-decoration: none; /* Remove the underline */
-        font-weight: bold;
-  }
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px;
+  background-color: #DCAE96;
+  border-radius: 5px;
+  font-size: 16px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-.profile
-  {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 10%;
-        padding: 20px; /* adds 30 pixels of padding around the image */        
-  }
-  
-  .form-box {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #FFFFE0;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
+.form-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow: visible; /* For scrolling if needed */
+  width: 100%;
+  max-width: 1200px;
+}
 
-  h2 {
-    text-align: center;
+.row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  flex-wrap: nowrap;  /* Allows wrapping on smaller screens */
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 50%; /* Width of each column */
+  min-width: 100px; /* Minimum width to ensure usability */
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input[type="text"], select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 90%;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.result-box {
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .row {
+    flex-wrap: wrap; /* Enable wrapping for smaller screens */
   }
   
-  label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+  .column {
+    width: 100%; /* Full width on smaller screens */
+    margin: 10px 0; /* Adjusted margin for mobile view */
   }
-  
-  input[type="text"], select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-  
-  input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: block;
-    margin: 0 auto;
-  }
-  
-  input[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  
-  .form-group {
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 20px;
-    width: 30%;
-  }
-  
-  .form-group label {
-    margin-bottom: 5px;
-  }
+}
