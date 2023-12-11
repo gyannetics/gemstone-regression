@@ -1,5 +1,4 @@
-# Gemstone Price Prediction
-
+# Gemstone Price Prediction (largely inspired by the original by Utkarsh Gaikwad)
 ### Introduction About the Data :
 
 **The dataset** The goal is to predict `price` of given diamond (Regression Analysis).

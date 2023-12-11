@@ -1,61 +1,92 @@
-# Import all the required libraries
 import os
 import sys
-from src.exception import CustomException
-from src.logger import logging
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+from src.exception import CustomException
+from src.logger import logging
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
-from src.components.data_transformation import DataTransformation, DataTransformationConfig
-from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
-
-# Initialize Data Ingestion Configuration
 @dataclass
 class DataIngestionConfig:
-    train_data_path: str = os.path.join('artifacts','train.csv')
-    test_data_path: str = os.path.join('artifacts','test.csv')
-    raw_data_path: str = os.path.join('artifacts','data.csv')
+    """
+    Data Ingestion Configuration Class
+    Holds the file paths for the raw, train, and test datasets.
+    """
+    raw_data_path: str = os.path.join('artifacts', 'data', 'gemstone.csv')
+    train_data_path: str = os.path.join('artifacts', 'data', 'train.csv')
+    test_data_path: str = os.path.join('artifacts', 'data', 'test.csv')
 
-# Create a class for Data Ingestion
 class DataIngestion:
-    def __init__(self):
-        self.ingestion_config = DataIngestionConfig()
+    """
+    A class used to handle the data ingestion process.
 
-    def initate_data_ingestion(self):
-        logging.info('Data ingestion method Started')
+    Attributes
+    ----------
+    config : DataIngestionConfig
+        The configuration object containing file paths.
+
+    Methods
+    -------
+    initiate_data_ingestion():
+        Reads the raw dataset, splits it into training and testing sets,
+        and saves them to specified paths.
+    """
+
+    def __init__(self, config: DataIngestionConfig):
+        """
+        Parameters
+        ----------
+        config : DataIngestionConfig
+            An object containing configuration settings for data ingestion.
+        """
+        self.config = config
+
+    def initiate_data_ingestion(self):
+        """
+        Initiates the data ingestion process.
+
+        Reads the dataset from the raw data path, splits it into training and testing datasets,
+        and saves them to their respective paths as specified in the configuration.
+
+        Returns
+        -------
+        tuple
+            A tuple containing paths to the train and test data files.
+        """
+        logging.info('Starting data ingestion process.')
         try:
-            df = pd.read_csv('notebook/data/gemstone.csv')
-            logging.info('Dataset read as pandas Dataframe')
+            df = pd.read_csv(self.config.raw_data_path)
+            logging.info('Dataset loaded into pandas DataFrame.')
 
-            os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path),exist_ok=True)
+            # Creating directories for storing processed data
+            os.makedirs(os.path.dirname(self.config.train_data_path), exist_ok=True)
+            os.makedirs(os.path.dirname(self.config.test_data_path), exist_ok=True)
 
-            df.to_csv(self.ingestion_config.raw_data_path,index=False)
-            
-            logging.info('Train Test Split Initiated')
+            # Splitting the dataset into training and testing sets
             train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
+            train_set.to_csv(self.config.train_data_path, index=False, header=True)
+            test_set.to_csv(self.config.test_data_path, index=False, header=True)
 
-            train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
-            test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
-
-            logging.info('Ingestion of Data is completed')
-
-            return(
-                self.ingestion_config.train_data_path,
-                self.ingestion_config.test_data_path
-            )
+            logging.info('Data ingestion completed successfully.')
+            return self.config.train_data_path, self.config.test_data_path
 
         except Exception as e:
-            logging.info('Exception occured at Data Ingestion stage')
+            logging.error(f'Error during data ingestion: {e}')
             raise CustomException(e, sys)
-    
-# Run Data ingestion
+
 if __name__ == '__main__':
-    obj = DataIngestion()
-    train_data, test_data = obj.initate_data_ingestion()
+    # Main execution block
+    # Set up configuration, initiate data ingestion, transformation, and model training
+    config = DataIngestionConfig()
+    data_ingestion = DataIngestion(config)
+    train_data_path, test_data_path = data_ingestion.initiate_data_ingestion()
 
+    # Data Transformation
     data_transformation = DataTransformation()
-    train_arr, test_arr, _ = data_transformation.initate_data_transformation(train_data,test_data)
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data_path, test_data_path)
 
-    modeltrainer = ModelTrainer()
-    modeltrainer.initate_model_training(train_arr, test_arr)
+    # Model Training
+    model_trainer = ModelTrainer()
+    model_trainer.initiate_model_training(train_arr, test_arr)
