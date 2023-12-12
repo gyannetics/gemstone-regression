@@ -5,6 +5,8 @@ from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 application = Flask(__name__)
 CORS(application)  # Enable CORS for the entire app
 
+app = application
+
 @app.route('/')
 @cross_origin()
 def home_page():
